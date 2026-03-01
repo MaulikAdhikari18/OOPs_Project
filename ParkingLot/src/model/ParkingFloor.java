@@ -18,6 +18,21 @@ public class ParkingFloor {
         spots.add(spot);
     }
 
+    public List<ParkingSpot> getSpots() {
+        return spots;
+    }
+
+    public boolean removeVehicle(String licensePlate) {
+        for (ParkingSpot spot : spots) {
+            if (spot.isOccupied() &&
+                spot.getParkedVehicle().getLicensePlate().equals(licensePlate)) {
+                spot.removeVehicle();
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ParkingSpot findAvailableSpot(Vehicle vehicle) {
         for (ParkingSpot spot : spots) {
             if (spot.canPark(vehicle)) {
