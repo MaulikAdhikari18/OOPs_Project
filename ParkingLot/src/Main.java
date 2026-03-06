@@ -25,8 +25,8 @@ public class Main {
             System.out.println("\n===== PARKING LOT MENU =====");
             System.out.println("1. Park Vehicle");
             System.out.println("2. Unpark Vehicle");
-            System.out.println("3. Exit");
-            System.out.print("Choose option: ");
+            System.out.println("3. View Parking Status");
+            System.out.println("4. Exit");
 
             int choice = sc.nextInt();
             sc.nextLine(); // consume newline
@@ -71,15 +71,15 @@ public class Main {
                     break;
 
                 case 3:
+                    parkingLot.displayParkingStatus();
+                    break;
+
+                case 4:
                     running = false;
                     System.out.println("Exiting system...");
                     break;
-
-                default:
-                    System.out.println("Invalid choice.");
             }
         }
-
         sc.close();
     }
 }
