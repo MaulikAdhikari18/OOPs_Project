@@ -52,4 +52,8 @@ public class ParkingSpot {
     public LocalDateTime getEntryTime() {
         return entryTime;
     }
+
+    public VehicleType getAllowedType() {
+        return allowedType;
+    }
 }

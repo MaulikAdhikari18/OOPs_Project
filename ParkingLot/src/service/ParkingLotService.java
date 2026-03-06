@@ -76,4 +76,11 @@ public class ParkingLotService {
         System.out.println("Vehicle not found.");
         return false;
     }
+
+    public void displayParkingStatus() {
+        System.out.println("\n===== PARKING LOT STATUS =====");
+        for (ParkingFloor floor : floors) {
+            floor.displaySpots();
+        }
+    }
 }
