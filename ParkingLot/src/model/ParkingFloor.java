@@ -45,4 +45,17 @@ public class ParkingFloor {
     public int getFloorNumber() {
         return floorNumber;
     }
+
+    public void displaySpots() {
+        System.out.println("Floor " + floorNumber + " Status:");
+        for (ParkingSpot spot : spots) {
+            if (spot.isOccupied()) {
+                System.out.println("Spot " + spot.getSpotId() +" (" + spot.getParkedVehicle().getType() + ") : Occupied - " +
+                spot.getParkedVehicle().getLicensePlate());
+            } else {
+                System.out.println("Spot " + spot.getSpotId() +" (" + spot.getAllowedType() + ") : Empty");
+            }
+        }
+        System.out.println();
+    }
 }

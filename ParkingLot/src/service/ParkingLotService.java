@@ -31,6 +31,11 @@ public class ParkingLotService {
     //Park Vehicle
     public String parkVehicle(Vehicle vehicle) {
 
+        if (isVehicleAlreadyParked(vehicle.getLicensePlate())) {
+            System.out.println("Vehicle already parked in the parking lot!");
+            return null;
+        }
+
         for (ParkingFloor floor : floors) {
 
             ParkingSpot spot = floor.findAvailableSpot(vehicle);
@@ -106,5 +111,17 @@ public class ParkingLotService {
         for (ParkingFloor floor : floors) {
             floor.displaySpots();
         }
+    }
+
+    //Check
+    private boolean isVehicleAlreadyParked(String licensePlate) {
+
+        for (Ticket ticket : activeTickets.values()) {
+            if (ticket.getVehicle().getLicensePlate().equalsIgnoreCase(licensePlate)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
