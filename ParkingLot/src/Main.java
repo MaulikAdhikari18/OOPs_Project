@@ -62,12 +62,9 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.print("Enter License Plate to remove: ");
-                    String removePlate = sc.nextLine();
-
-                    // Temporary vehicle object for search
-                    Vehicle tempVehicle = new Car(removePlate);
-                    parkingLot.unparkVehicle(tempVehicle);
+                    System.out.print("Enter Ticket ID: ");
+                    String ticketId = sc.nextLine();
+                    parkingLot.unparkVehicle(ticketId);
                     break;
 
                 case 3:
