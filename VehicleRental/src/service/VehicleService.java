@@ -15,11 +15,8 @@ public class VehicleService {
 
         String query = "INSERT INTO vehicles(model,type,price_per_day,available) VALUES(?,?,?,?)";
 
-        try {
-
-            Connection conn = DBConnection.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(query);
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setString(1, vehicle.getModel());
             ps.setString(2, type);
@@ -35,27 +32,22 @@ public class VehicleService {
         }
     }
 
-        public void getAllVehicles() {
+    public void getAllVehicles() {
 
         String query = "SELECT * FROM vehicles";
 
-        try {
-
-            Connection conn = DBConnection.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(query);
-
-            ResultSet rs = ps.executeQuery();
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(query);
+                ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
 
                 System.out.println(
                         "ID: " + rs.getInt("vehicle_id") +
-                        " Model: " + rs.getString("model") +
-                        " Type: " + rs.getString("type") +
-                        " Price: " + rs.getDouble("price_per_day") +
-                        " Available: " + rs.getBoolean("available")
-                );
+                                " Model: " + rs.getString("model") +
+                                " Type: " + rs.getString("type") +
+                                " Price: " + rs.getDouble("price_per_day") +
+                                " Available: " + rs.getBoolean("available"));
             }
 
         } catch (SQLException e) {
@@ -63,15 +55,12 @@ public class VehicleService {
         }
     }
 
-        public void updateAvailability(int vehicleId, boolean available) {
+    public void updateAvailability(int vehicleId, boolean available) {
 
         String query = "UPDATE vehicles SET available=? WHERE vehicle_id=?";
 
-        try {
-
-            Connection conn = DBConnection.getConnection();
-
-            PreparedStatement ps = conn.prepareStatement(query);
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setBoolean(1, available);
             ps.setInt(2, vehicleId);
@@ -85,4 +74,3 @@ public class VehicleService {
         }
     }
 }
-    
