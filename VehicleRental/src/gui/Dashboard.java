@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.*;
+import gui.RentVehicleForm;
 
 public class Dashboard {
 
@@ -31,6 +32,7 @@ public class Dashboard {
         JButton rentVehicle = new JButton("Rent Vehicle");
         rentVehicle.setBounds(170, 150, 150, 30);
         rentVehicle.setFocusPainted(false);
+        rentVehicle.addActionListener(e -> new RentVehicleForm());
 
         JButton returnVehicle = new JButton("Return Vehicle");
         returnVehicle.setBounds(170, 200, 150, 30);
