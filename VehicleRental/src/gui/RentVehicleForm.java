@@ -33,7 +33,7 @@ public class RentVehicleForm {
         daysField.setBounds(160, 150, 150, 25);
 
         JButton rentButton = new JButton("Rent");
-        rentButton.setBounds(130, 220, 120, 30);
+        rentButton.setBounds(60, 220, 120, 30);
 
         rentButton.addActionListener(e -> {
             try {
@@ -48,6 +48,29 @@ public class RentVehicleForm {
 
                 JOptionPane.showMessageDialog(frame, "Vehicle Rented Successfully!");
 
+                // Clear fields
+                vehicleField.setText("");
+                customerField.setText("");
+                daysField.setText("");
+
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Invalid Input!");
+            }
+        });
+
+        JButton returnButton = new JButton("Return");
+        returnButton.setBounds(200, 220, 120, 30);
+        returnButton.setFocusPainted(false);
+
+        returnButton.addActionListener(e -> {
+            try {
+                int vehicleId = Integer.parseInt(vehicleField.getText());
+
+                RentalService service = new RentalService();
+                service.returnVehicle(vehicleId);
+
+                JOptionPane.showMessageDialog(frame, "Vehicle Returned Successfully!");
+
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frame, "Invalid Input!");
             }
@@ -60,6 +83,7 @@ public class RentVehicleForm {
         frame.add(daysLabel);
         frame.add(daysField);
         frame.add(rentButton);
+        frame.add(returnButton);
 
         frame.setVisible(true);
     }
