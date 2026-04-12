@@ -1,5 +1,7 @@
 package gui;
 
+import java.sql.*;
+import database.DBConnection;
 import javax.swing.*;
 import service.RentalService;
 
@@ -20,11 +22,28 @@ public class RentVehicleForm {
         JTextField customerField = new JTextField();
         customerField.setBounds(160, 50, 150, 25);
 
-        JLabel vehicleLabel = new JLabel("Vehicle ID:");
-        vehicleLabel.setBounds(50, 100, 100, 25);
+        JLabel vehicleLabel = new JLabel("Select Vehicle:");
+        vehicleLabel.setBounds(50, 100, 120, 25);
 
-        JTextField vehicleField = new JTextField();
-        vehicleField.setBounds(160, 100, 150, 25);
+        JComboBox<String> vehicleDropdown = new JComboBox<>();
+        vehicleDropdown.setBounds(160, 100, 150, 25);
+
+        try (Connection conn = DBConnection.getConnection();
+                PreparedStatement ps = conn
+                        .prepareStatement("SELECT vehicle_id, model FROM vehicles WHERE available=true");
+                ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                int id = rs.getInt("vehicle_id");
+                String model = rs.getString("model");
+
+                // Store both ID + name
+                vehicleDropdown.addItem(id + " - " + model);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         JLabel daysLabel = new JLabel("Days:");
         daysLabel.setBounds(50, 150, 100, 25);
@@ -38,20 +57,16 @@ public class RentVehicleForm {
         rentButton.addActionListener(e -> {
             try {
                 int customerId = Integer.parseInt(customerField.getText());
-                int vehicleId = Integer.parseInt(vehicleField.getText());
                 int days = Integer.parseInt(daysField.getText());
 
-                double pricePerDay = 1000;
+                // Extract ID from dropdown
+                String selected = (String) vehicleDropdown.getSelectedItem();
+                int vehicleId = Integer.parseInt(selected.split(" - ")[0]);
 
                 RentalService service = new RentalService();
-                service.rentVehicle(vehicleId, customerId, days, pricePerDay);
+                service.rentVehicle(vehicleId, customerId, days);
 
                 JOptionPane.showMessageDialog(frame, "Vehicle Rented Successfully!");
-
-                // Clear fields
-                vehicleField.setText("");
-                customerField.setText("");
-                daysField.setText("");
 
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(frame, "Invalid Input!");
@@ -64,7 +79,8 @@ public class RentVehicleForm {
 
         returnButton.addActionListener(e -> {
             try {
-                int vehicleId = Integer.parseInt(vehicleField.getText());
+                String selected = (String) vehicleDropdown.getSelectedItem();
+                int vehicleId = Integer.parseInt(selected.split(" - ")[0]);
 
                 RentalService service = new RentalService();
                 service.returnVehicle(vehicleId);
@@ -72,18 +88,19 @@ public class RentVehicleForm {
                 JOptionPane.showMessageDialog(frame, "Vehicle Returned Successfully!");
 
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(frame, "Invalid Input!");
+                JOptionPane.showMessageDialog(frame, "Select a valid vehicle!");
             }
         });
 
         frame.add(customerLabel);
         frame.add(customerField);
         frame.add(vehicleLabel);
-        frame.add(vehicleField);
         frame.add(daysLabel);
         frame.add(daysField);
         frame.add(rentButton);
         frame.add(returnButton);
+        frame.add(vehicleLabel);
+        frame.add(vehicleDropdown);
 
         frame.setVisible(true);
     }
